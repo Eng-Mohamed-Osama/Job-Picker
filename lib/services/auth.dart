@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
-//abstract class to define the public interface for any auth service
 abstract class AuthBase {
   User get currentUser;
   Future<void> signinAnonmous();

@@ -23,11 +23,11 @@ class Navbar extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.indigo.withOpacity(.7),
-                    blurRadius: 20.0, // soften the shadow
-                    spreadRadius: 5.0, //extend the shadow
+                    blurRadius: 20.0,
+                    spreadRadius: 5.0,
                     offset: Offset(
-                      15.0, // Move to right 10  horizontally
-                      15.0, // Move to bottom 10 Vertically
+                      15.0,
+                      15.0,
                     ),
                   )
                 ],
@@ -38,18 +38,21 @@ class Navbar extends StatelessWidget {
                 items: [
                   /// Home
                   DotNavigationBarItem(
+                    unselectedColor: Colors.grey,
                     icon: Icon(Icons.home),
                     selectedColor: Colors.indigo,
                   ),
 
-                  /// Likes
+                  /// Entry
                   DotNavigationBarItem(
+                    unselectedColor: Colors.grey,
                     icon: Icon(Icons.list),
                     selectedColor: Colors.indigo,
                   ),
 
                   /// Profile
                   DotNavigationBarItem(
+                    unselectedColor: Colors.grey,
                     icon: Icon(Icons.person),
                     selectedColor: Colors.indigo,
                   ),

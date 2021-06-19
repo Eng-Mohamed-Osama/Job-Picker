@@ -26,6 +26,10 @@ class DataBaseProvider extends ChangeNotifier {
     return _dataBaseRepository.getAllJobs();
   }
 
+  Stream<List<Job>> getSingleJob(documentUniquId) {
+    return _dataBaseRepository.getSingleJob(documentUniquId);
+  }
+
   Future<void> getJob(documentUniquId) async {
     _dataBaseRepository.getJob(documentUniquId).then((value) => readJobs());
   }

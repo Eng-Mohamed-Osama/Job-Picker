@@ -7,6 +7,7 @@ abstract class DataBase {
   Stream<List<Job>> getAllJobs();
   Future<void> getJob(documentUniquId);
   Future<void> editJob(documentUniquId, jobdata);
+  Stream<List<Job>> getSingleJob(documentUniquId);
 }
 
 class FirebaseDataBase implements DataBase {
@@ -27,6 +28,17 @@ class FirebaseDataBase implements DataBase {
 
   Stream<List<Job>> getAllJobs() {
     final snapshots = FirebaseFirestore.instance.collection('Jobs').snapshots();
+    return snapshots.map((snapshot) => snapshot.docs.map((e) {
+          final data = e.data();
+          return data != null ? Job.fromJson(data) : null;
+        }).toList());
+  }
+
+  Stream<List<Job>> getSingleJob(documentUniquId) {
+    final snapshots = FirebaseFirestore.instance
+        .collection('Jobs')
+        .where('docId', isEqualTo: documentUniquId)
+        .snapshots();
     return snapshots.map((snapshot) => snapshot.docs.map((e) {
           final data = e.data();
           return data != null ? Job.fromJson(data) : null;

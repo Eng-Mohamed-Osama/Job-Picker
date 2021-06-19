@@ -16,6 +16,10 @@ class DataBaseRepository {
     return _firebaseDataBase.getAllJobs();
   }
 
+  Stream<List<Job>> getSingleJob(documentUniquId) {
+    return _firebaseDataBase.getSingleJob(documentUniquId);
+  }
+
   Future<void> getJob(documentUniquId) {
     return _firebaseDataBase.getJob(documentUniquId);
   }

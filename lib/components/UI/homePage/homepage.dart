@@ -8,12 +8,24 @@ import 'package:time_tracker/components/widgets/noJobs.dart';
 import 'package:time_tracker/provider/databaseProvider.dart';
 import 'package:time_tracker/services/auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController searchController = TextEditingController();
   void _logout(context) {
     final auth = Provider.of<Auth>(context, listen: false);
     auth.signout();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
   }
 
   @override
@@ -46,36 +58,91 @@ class HomePage extends StatelessWidget {
                     ],
                   ))
             ]),
-            body: (jobsProvider.jobs != null && jobsProvider.jobs.length > 0)
-                ? ListView.separated(
-                    separatorBuilder: (ctx, index) {
-                      return Divider(
-                        height: .5,
-                        color: Colors.black12,
-                      );
-                    },
-                    itemCount: jobsProvider.jobs.length,
-                    itemBuilder: (ctx, index) {
-                      final job = jobsProvider.jobs[index];
-                      return JobWidget(
-                        title: job.jobData.name,
-                        index: index,
-                        id: job.docId,
-                        provider: jobsProvider,
-                        onTap: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => JobEntity(
-                                        dataBase: jobsProvider,
-                                        jobName: job.jobData.name,
-                                        jobRate: job.jobData.ratePerHour,
-                                        jobID: job.docId,
-                                      )))
-                        },
-                      );
-                    })
-                : Nojobs(),
+            body: Container(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 16, bottom: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[350],
+                          borderRadius: BorderRadius.circular(5)),
+                      height: 35,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(
+                              Icons.search,
+                              size: 17,
+                            ),
+                            hintText: 'search',
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) async {
+                            jobsProvider.readJobs();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  (jobsProvider.jobs != null &&
+                          jobsProvider.jobs
+                                  .where((element) => element.jobData.name
+                                      .contains(searchController.text))
+                                  .toList()
+                                  .length >
+                              0)
+                      ? Expanded(
+                          child: ListView.separated(
+                              separatorBuilder: (ctx, index) {
+                                return Divider(
+                                  height: .5,
+                                  color: Colors.black12,
+                                );
+                              },
+                              itemCount: jobsProvider.jobs
+                                  .where((element) => element.jobData.name
+                                      .contains(searchController.text))
+                                  .toList()
+                                  .length,
+                              itemBuilder: (ctx, index) {
+                                final job = jobsProvider.jobs
+                                    .where((element) => element.jobData.name
+                                        .contains(searchController.text))
+                                    .toList()[index];
+                                return JobWidget(
+                                  title: job.jobData.name,
+                                  index: index,
+                                  id: job.docId,
+                                  provider: jobsProvider,
+                                  onTap: () => {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => JobEntity(
+                                                  dataBase: jobsProvider,
+                                                  jobName: job.jobData.name,
+                                                  jobRate:
+                                                      job.jobData.ratePerHour,
+                                                  jobID: job.docId,
+                                                )))
+                                  },
+                                );
+                              }),
+                        )
+                      : Expanded(
+                          child: Nojobs(
+                              mainText: 'Nothing here',
+                              subText: (searchController.text.isEmpty)
+                                  ? 'Add a new item to get started'
+                                  : 'No Job Match Your Search'),
+                        )
+                ],
+              ),
+            ),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: () async {

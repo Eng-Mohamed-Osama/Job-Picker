@@ -11,7 +11,7 @@ class DataBaseProvider extends ChangeNotifier {
     readJobs();
   }
 
-  void readJobs() {
+  Future<void> readJobs() async {
     _dataBaseRepository
         .readJobs(this.uid)
         .then((value) => {jobs = value, notifyListeners()});

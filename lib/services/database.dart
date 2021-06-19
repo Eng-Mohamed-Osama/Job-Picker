@@ -10,11 +10,9 @@ abstract class DataBase {
 }
 
 class FirebaseDataBase implements DataBase {
-  // final String uid;
-  // FirebaseDataBase();
-
   Future<List<Job>> readJobs(uid) async {
     final List<Job> jobs = [];
+
     final snapshot = await FirebaseFirestore.instance
         .collection('Jobs')
         .where('userId', isEqualTo: uid)
@@ -23,6 +21,7 @@ class FirebaseDataBase implements DataBase {
       Job job = Job.fromJson(element.data());
       jobs.add(job);
     });
+
     return jobs;
   }
 

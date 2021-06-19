@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/components/UI/JobEnities/JobEntity.dart';
 import 'package:time_tracker/components/UI/homePage/addJob.dart';
 import 'package:time_tracker/components/widgets/dialogs.dart';
 import 'package:time_tracker/components/widgets/jobWidget.dart';
@@ -65,11 +66,10 @@ class HomePage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddJob(
+                                  builder: (context) => JobEntity(
                                         dataBase: jobsProvider,
                                         jobName: job.jobData.name,
                                         jobRate: job.jobData.ratePerHour,
-                                        edit: true,
                                         jobID: job.docId,
                                       )))
                         },

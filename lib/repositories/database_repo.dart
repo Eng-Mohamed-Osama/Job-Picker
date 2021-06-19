@@ -20,8 +20,8 @@ class DataBaseRepository {
     return _firebaseDataBase.getSingleJob(documentUniquId);
   }
 
-  Future<void> getJob(documentUniquId) {
-    return _firebaseDataBase.getJob(documentUniquId);
+  Future<void> deleteJob(documentUniquId) {
+    return _firebaseDataBase.deleteJob(documentUniquId);
   }
 
   Future<void> editJob(documentUniquId, jobdata) {

@@ -5,7 +5,7 @@ abstract class DataBase {
   Future<List<Job>> readJobs(uid);
   Future<void> createJob(JobData jobdata, uid);
   Stream<List<Job>> getAllJobs();
-  Future<void> getJob(documentUniquId);
+  Future<void> deleteJob(documentUniquId);
   Future<void> editJob(documentUniquId, jobdata);
   Stream<List<Job>> getSingleJob(documentUniquId);
 }
@@ -54,7 +54,7 @@ class FirebaseDataBase implements DataBase {
     });
   }
 
-  Future<void> getJob(documentUniquId) async {
+  Future<void> deleteJob(documentUniquId) async {
     await FirebaseFirestore.instance
         .collection('Jobs')
         .where('docId', isEqualTo: documentUniquId)

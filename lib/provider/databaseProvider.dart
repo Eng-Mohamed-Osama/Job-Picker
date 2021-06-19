@@ -30,8 +30,8 @@ class DataBaseProvider extends ChangeNotifier {
     return _dataBaseRepository.getSingleJob(documentUniquId);
   }
 
-  Future<void> getJob(documentUniquId) async {
-    _dataBaseRepository.getJob(documentUniquId).then((value) => readJobs());
+  Future<void> deleteJob(documentUniquId) async {
+    _dataBaseRepository.deleteJob(documentUniquId).then((value) => readJobs());
   }
 
   Future<void> editJob(documentUniquId, jobdata) async {

@@ -18,7 +18,7 @@ class JobEntity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(jobName), actions: [
+      appBar: AppBar(centerTitle: true, title: Text(jobName), actions: [
         // ignore: deprecated_member_use
         FlatButton(
           onPressed: () async {

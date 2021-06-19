@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         child: Consumer<DataBaseProvider>(
             builder: (buildContext, jobsProvider, _) {
           return Scaffold(
-            appBar: AppBar(title: Text('Jobs'), actions: [
+            appBar: AppBar(centerTitle: true, title: Text('Jobs'), actions: [
               // ignore: deprecated_member_use
               FlatButton(
                   onPressed: () async {

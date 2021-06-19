@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/components/UI/homePage/homepage.dart';
 import 'package:time_tracker/components/UI/auth/signin.dart';
+import 'package:time_tracker/navbar.dart';
 import 'package:time_tracker/provider/databaseProvider.dart';
 import 'package:time_tracker/services/auth.dart';
 
@@ -19,8 +19,7 @@ class LandingPage extends StatelessWidget {
         if (snapshot.hasData) {
           final uid = Provider.of<Auth>(context).currentUser.uid;
           return ChangeNotifierProvider(
-              create: (context) => DataBaseProvider(uid: uid),
-              child: HomePage());
+              create: (context) => DataBaseProvider(uid: uid), child: Navbar());
         }
         return SignInPage();
       },

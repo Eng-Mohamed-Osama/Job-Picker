@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                         Icons.search,
                         size: 17,
                       ),
-                      hintText: 'search',
+                      hintText: 'Search',
                       border: InputBorder.none,
                     ),
                     onChanged: (value) async {

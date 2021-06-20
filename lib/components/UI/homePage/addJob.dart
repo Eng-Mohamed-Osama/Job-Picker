@@ -39,8 +39,6 @@ class _AddJob extends State<AddJob> {
     jobrateController.text = (widget.jobRate != null)
         ? widget.jobRate.toString()
         : jobrateController.text;
-    print(jobrateController.text);
-    print(widget.jobRate);
   }
 
   @override

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/components/UI/JobEnities/JobEntity.dart';
 import 'package:time_tracker/components/UI/homePage/addJob.dart';
-import 'package:time_tracker/components/widgets/dialogs.dart';
 import 'package:time_tracker/components/widgets/jobWidget.dart';
 import 'package:time_tracker/components/widgets/noJobs.dart';
 import 'package:time_tracker/provider/databaseProvider.dart';
-import 'package:time_tracker/services/auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key, this.jobsProvider}) : super(key: key);
@@ -18,10 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController searchController = TextEditingController();
-  void _logout(context) {
-    final auth = Provider.of<Auth>(context, listen: false);
-    auth.signout();
-  }
 
   @override
   void dispose() {
@@ -32,28 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Jobs'), actions: [
-        // ignore: deprecated_member_use
-        FlatButton(
-            onPressed: () async {
-              bool logout = await customDialogs(context, 'Log Out',
-                  'Are you sure you want to log out?', 'Log Out', true);
-              if (logout) {
-                _logout(context);
-              }
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Logout',
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: Icon(Icons.logout, size: 18, color: Colors.white),
-                )
-              ],
-            ))
-      ]),
+      appBar: AppBar(centerTitle: true, title: Text('Jobs')),
       body: Container(
         child: Column(
           children: [

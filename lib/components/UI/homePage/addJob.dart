@@ -36,8 +36,11 @@ class _AddJob extends State<AddJob> {
   void initState() {
     super.initState();
     jobNameController.text = (widget.jobName != null) ? widget.jobName : '';
-    jobrateController.text =
-        (widget.jobRate.toString() != null) ? widget.jobRate.toString() : '';
+    jobrateController.text = (widget.jobRate != null)
+        ? widget.jobRate.toString()
+        : jobrateController.text;
+    print(jobrateController.text);
+    print(widget.jobRate);
   }
 
   @override

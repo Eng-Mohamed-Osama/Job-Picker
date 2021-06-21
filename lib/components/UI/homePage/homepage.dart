@@ -26,7 +26,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Jobs')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Jobs'),
+        actions: [
+          // ignore: deprecated_member_use
+          FlatButton(
+            onPressed: () async {
+              final data =
+                  Provider.of<DataBaseProvider>(context, listen: false);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddJob(
+                            dataBase: data,
+                          )));
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 20,
+            ),
+          )
+        ],
+      ),
       body: Container(
         child: Column(
           children: [
@@ -93,8 +116,8 @@ class _HomePageState extends State<HomePage> {
                                   MaterialPageRoute(
                                       builder: (context) => JobEntity(
                                             dataBase: widget.jobsProvider,
-                                            jobName: job.jobData.name,
-                                            jobRate: job.jobData.ratePerHour,
+                                            // jobName: job.jobData.name,
+                                            // jobRate: job.jobData.ratePerHour,
                                             jobID: job.docId,
                                           )))
                             },
@@ -110,18 +133,6 @@ class _HomePageState extends State<HomePage> {
                   )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          final data = Provider.of<DataBaseProvider>(context, listen: false);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddJob(
-                        dataBase: data,
-                      )));
-        },
       ),
     );
   }

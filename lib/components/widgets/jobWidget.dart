@@ -24,7 +24,7 @@ class JobWidget extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
         ),
       ),
-      background: Container(color: Colors.redAccent),
+      background: Container(color: Colors.red),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) async {
         await provider.deleteJob(id);

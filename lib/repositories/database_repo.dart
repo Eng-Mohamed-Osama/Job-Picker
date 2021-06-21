@@ -1,3 +1,4 @@
+import 'package:time_tracker/models/entry.dart';
 import 'package:time_tracker/models/job.dart';
 import 'package:time_tracker/services/database.dart';
 
@@ -26,5 +27,17 @@ class DataBaseRepository {
 
   Future<void> editJob(documentUniquId, jobdata) {
     return _firebaseDataBase.editJob(documentUniquId, jobdata);
+  }
+
+  Stream<List<Entry>> getEntries({jobId}) {
+    return _firebaseDataBase.getEntries(jobId: jobId);
+  }
+
+  Future<void> createEntry(Entry entry) {
+    return _firebaseDataBase.createEntry(entry);
+  }
+
+  Future<void> deleteEntry(entryId) {
+    return _firebaseDataBase.deleteEntry(entryId);
   }
 }

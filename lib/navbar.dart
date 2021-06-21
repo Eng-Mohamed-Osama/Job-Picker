@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker/components/UI/homePage/homepage.dart';
 import 'package:time_tracker/provider/databaseProvider.dart';
 
+import 'components/UI/entries/allEntries.dart';
 import 'components/UI/profile/profile.dart';
 
 class Navbar extends StatefulWidget {
@@ -21,7 +22,9 @@ class _NavbarState extends State<Navbar> {
     final List<Widget> _pages = [
       HomePage(
           jobsProvider: Provider.of<DataBaseProvider>(context, listen: true)),
-      Profile(),
+      AllEntries(
+        dataBase: Provider.of<DataBaseProvider>(context, listen: true),
+      ),
       Profile()
     ];
     return Consumer<DataBaseProvider>(builder: (buildContext, jobsProvider, _) {

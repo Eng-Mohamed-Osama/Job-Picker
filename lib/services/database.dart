@@ -16,7 +16,7 @@ abstract class DataBase {
 
 class FirebaseDataBase implements DataBase {
   //Jobs
-
+  @override
   Future<List<Job>> readJobs(uid) async {
     final List<Job> jobs = [];
 
@@ -32,6 +32,7 @@ class FirebaseDataBase implements DataBase {
     return jobs;
   }
 
+  @override
   Stream<List<Job>> getAllJobs() {
     final snapshots = FirebaseFirestore.instance.collection('Jobs').snapshots();
     return snapshots.map((snapshot) => snapshot.docs.map((e) {
@@ -40,6 +41,7 @@ class FirebaseDataBase implements DataBase {
         }).toList());
   }
 
+  @override
   Stream<List<Job>> getSingleJob(documentUniquId) {
     final snapshots = FirebaseFirestore.instance
         .collection('Jobs')
@@ -51,6 +53,7 @@ class FirebaseDataBase implements DataBase {
         }).toList());
   }
 
+  @override
   Future<void> createJob(JobData jobdata, uid) async {
     var documentUniquId = DateTime.now().toIso8601String();
     await FirebaseFirestore.instance.collection('Jobs').doc().set({
@@ -60,6 +63,7 @@ class FirebaseDataBase implements DataBase {
     });
   }
 
+  @override
   Future<void> deleteJob(documentUniquId) async {
     await FirebaseFirestore.instance
         .collection('Jobs')
@@ -83,6 +87,7 @@ class FirebaseDataBase implements DataBase {
             }));
   }
 
+  @override
   Future<void> editJob(documentUniquId, jobdata) async {
     await FirebaseFirestore.instance
         .collection('Jobs')
@@ -100,37 +105,24 @@ class FirebaseDataBase implements DataBase {
             .collection('Entries')
             .where('jobId', isEqualTo: documentUniquId)
             .get()
-            .then((value) => value.docs.forEach((e) => {
-                  FirebaseFirestore.instance
+            .then((value) => value.docs.forEach((e) async => {
+                  await FirebaseFirestore.instance
                       .collection('Entries')
                       .doc(e.id)
                       .update({
                     'entryRate': jobdata.ratePerHour *
-                        (FirebaseFirestore.instance
+                        (await FirebaseFirestore.instance
                             .collection('Entries')
                             .doc(e.id)
-                            .snapshots()
-                            .map((event) => event
-                                .data()
-                                .values
-                                .elementAt(1)
-                                .toDate()
-                                .difference(FirebaseFirestore.instance
-                                    .collection('Entries')
-                                    .doc(e.id)
-                                    .snapshots()
-                                    .map((event) => event
-                                        .data()
-                                        .values
-                                        .elementAt(5)
-                                        .toDate()))
-                                .inHours)),
+                            .get()
+                            .then((value) =>
+                                Entry.fromJson(value.data()).entryDuration))
                   })
                 })));
   }
 
   //Entries
-
+  @override
   Stream<List<Entry>> getEntries({jobId, query, descend, uid}) {
     print('we are here $descend');
     final snapshots = (jobId != null)
@@ -157,10 +149,12 @@ class FirebaseDataBase implements DataBase {
       'jobId': entry.jobId,
       'userId': uid,
       'entryRate': entry.entryRate,
+      'entryDuration': entry.entryDuration,
       'id': DateTime.now().millisecondsSinceEpoch,
     });
   }
 
+  @override
   Future<void> deleteEntry(entryId) async {
     await FirebaseFirestore.instance
         .collection('Entries')

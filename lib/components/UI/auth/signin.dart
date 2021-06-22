@@ -71,7 +71,7 @@ class _SignInPage extends State<SignInPage> {
       appBar: AppBar(
         title: Center(
             child: Text(
-          'Time Tracker',
+          'Planogo',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         )),
         elevation: 5,

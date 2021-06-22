@@ -36,7 +36,9 @@ class Auth implements AuthBase {
       final googleAuth = await googleUser.authentication;
       if (googleAuth.accessToken != null) {
         final userCredential = await _auth.signInWithCredential(
-            GoogleAuthProvider.credential(idToken: googleAuth.accessToken));
+            GoogleAuthProvider.credential(
+                idToken: googleAuth.idToken,
+                accessToken: googleAuth.accessToken));
         return userCredential.user;
       } else {
         throw FirebaseAuthException(
@@ -53,8 +55,8 @@ class Auth implements AuthBase {
   Future<User> signinWithFacebook() async {
     final facebookSignIn = FacebookLogin();
     final facebookUser = await facebookSignIn.logIn(permissions: [
-      FacebookPermission.email,
       FacebookPermission.publicProfile,
+      FacebookPermission.email,
     ]);
 
     switch (facebookUser.status) {

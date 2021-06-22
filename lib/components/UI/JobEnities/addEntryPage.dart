@@ -76,6 +76,8 @@ class _AddEntry extends State<AddEntry> {
                           comment: entryCommentController.text.toString(),
                           start: startTime,
                           end: endTime,
+                          entryDuration:
+                              (endTime.difference(startTime).inHours),
                           entryRate: (endTime.difference(startTime).inHours) *
                               widget.jobRate,
                           jobId: widget.jobID,

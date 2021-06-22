@@ -23,7 +23,7 @@ class _NavbarState extends State<Navbar> {
       HomePage(
           jobsProvider: Provider.of<DataBaseProvider>(context, listen: true)),
       AllEntries(
-        dataBase: Provider.of<DataBaseProvider>(context, listen: true),
+        dataBase: Provider.of<DataBaseProvider>(context, listen: false),
       ),
       Profile()
     ];

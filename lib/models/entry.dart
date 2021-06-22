@@ -16,19 +16,25 @@ class Entry {
     this.jobId,
     this.id,
     this.entryRate,
+    this.entryDuration,
+    this.userId,
   });
 
   String comment;
   DateTime start;
   DateTime end;
   String jobId;
+  String userId;
   int id;
+  int entryDuration;
   int entryRate;
 
   factory Entry.fromJson(Map<String, dynamic> json) => Entry(
         comment: json["comment"],
         end: json["end"].toDate(),
         id: json["id"],
+        entryDuration: json["entryDuration"],
+        userId: json["userId"],
         start: json["start"].toDate(),
         jobId: json["jobId"],
         entryRate: json["entryRate"],
@@ -38,6 +44,8 @@ class Entry {
         "comment": comment,
         "start": start,
         "end": end,
+        "entryDuration": entryDuration,
+        "userId": userId,
         "jobId": jobId,
         "entryRate": entryRate,
         "id": id,

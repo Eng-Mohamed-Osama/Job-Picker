@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return Provider(
       create: (context) => Auth(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Planogo',
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),

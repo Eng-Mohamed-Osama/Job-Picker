@@ -4,9 +4,23 @@ import 'package:time_tracker/components/widgets/noJobs.dart';
 import 'package:time_tracker/models/entry.dart';
 import 'package:time_tracker/provider/databaseProvider.dart';
 
-class AllEntries extends StatelessWidget {
+class AllEntries extends StatefulWidget {
   const AllEntries({Key key, this.dataBase}) : super(key: key);
   final DataBaseProvider dataBase;
+
+  @override
+  _AllEntriesState createState() => _AllEntriesState();
+}
+
+class _AllEntriesState extends State<AllEntries> {
+  String query = 'comment';
+  bool descend = false;
+
+  @override
+  void initState() {
+    super.initState();
+    descend = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +30,7 @@ class AllEntries extends StatelessWidget {
           title: Text('Entries'),
         ),
         body: StreamBuilder<List<Entry>>(
-            stream: dataBase.getEntries(),
+            stream: widget.dataBase.getEntries(query: query, descend: descend),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data.length > 0) {
                 final allEntites = snapshot.data.toList();
@@ -26,26 +40,63 @@ class AllEntries extends StatelessWidget {
                 return Container(
                     child: Column(children: [
                   Container(
-                    color: Colors.grey[400],
+                    color: Colors.grey[350],
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15.0, 5, 15, 5),
+                      padding: const EdgeInsets.fromLTRB(15.0, 15, 15, 15),
                       child: Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'All Entries',
-                              style: TextStyle(fontSize: 18),
-                            ),
+                            GestureDetector(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      'All Entries',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Icon(
+                                      (descend)
+                                          ? Icons.arrow_downward_rounded
+                                          : Icons.arrow_upward_outlined,
+                                      size: 16,
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    query = 'comment';
+                                    descend = !descend;
+                                  });
+                                }),
                             Row(
                               children: [
-                                Text(
-                                  '\$ ${allEntriesRate.reduce((a, b) => a + b).toString()}',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.green[400]),
+                                GestureDetector(
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                            '\$ ${allEntriesRate.reduce((a, b) => a + b).toString()}',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.green[400])),
+                                        Icon(
+                                          (descend)
+                                              ? Icons.arrow_downward_rounded
+                                              : Icons.arrow_upward_outlined,
+                                          size: 16,
+                                        )
+                                      ]),
+                                  onTap: () {
+                                    setState(() {
+                                      query = 'entryRate';
+                                      descend = !descend;
+                                    });
+                                  },
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 25.0),
+                                  padding: const EdgeInsets.only(left: 15.0),
                                   child: Text(
                                     '${allEntrieHrs.reduce((a, b) => a + b).toString()} hr',
                                     style: TextStyle(fontSize: 18),
@@ -73,7 +124,7 @@ class AllEntries extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 200,
+                                  width: 180,
                                   child: Text(
                                     allEntites[index].comment,
                                     style: TextStyle(fontSize: 15),
@@ -88,15 +139,15 @@ class AllEntries extends StatelessWidget {
                                           color: Colors.green[400]),
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 25.0),
+                                      padding: const EdgeInsets.only(
+                                          left: 30.0, right: 0),
                                       child: Text(
                                         '${(allEntites[index].end.difference(allEntites[index].start)).inHours.toString()} hr',
                                         style: TextStyle(fontSize: 18),
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),

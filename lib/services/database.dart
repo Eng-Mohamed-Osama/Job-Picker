@@ -9,9 +9,9 @@ abstract class DataBase {
   Future<void> deleteJob(documentUniquId);
   Future<void> editJob(documentUniquId, jobdata);
   Stream<List<Job>> getSingleJob(documentUniquId);
-  Future<void> createEntry(Entry entry);
+  Future<void> createEntry(Entry entry, uid);
   Future<void> deleteEntry(entryId);
-  Stream<List<Entry>> getEntries({jobId});
+  Stream<List<Entry>> getEntries({jobId, query, descend, uid});
 }
 
 class FirebaseDataBase implements DataBase {
@@ -100,38 +100,62 @@ class FirebaseDataBase implements DataBase {
             .collection('Entries')
             .where('jobId', isEqualTo: documentUniquId)
             .get()
-            .then((value) => value.docs.forEach((element) => {
+            .then((value) => value.docs.forEach((e) => {
                   FirebaseFirestore.instance
                       .collection('Entries')
-                      .doc(element.id)
+                      .doc(e.id)
                       .update({
-                    'entryRate': jobdata.ratePerHour * 5,
+                    'entryRate': jobdata.ratePerHour *
+                        (FirebaseFirestore.instance
+                            .collection('Entries')
+                            .doc(e.id)
+                            .snapshots()
+                            .map((event) => event
+                                .data()
+                                .values
+                                .elementAt(1)
+                                .toDate()
+                                .difference(FirebaseFirestore.instance
+                                    .collection('Entries')
+                                    .doc(e.id)
+                                    .snapshots()
+                                    .map((event) => event
+                                        .data()
+                                        .values
+                                        .elementAt(5)
+                                        .toDate()))
+                                .inHours)),
                   })
                 })));
   }
 
   //Entries
 
-  Stream<List<Entry>> getEntries({jobId}) {
-    final snapshots = jobId != null
+  Stream<List<Entry>> getEntries({jobId, query, descend, uid}) {
+    print('we are here $descend');
+    final snapshots = (jobId != null)
         ? FirebaseFirestore.instance
             .collection('Entries')
             .where('jobId', isEqualTo: jobId)
             .snapshots()
-        : FirebaseFirestore.instance.collection('Entries').snapshots();
+        : FirebaseFirestore.instance
+            .collection('Entries')
+            .where('userId', isEqualTo: uid)
+            .orderBy(query, descending: descend)
+            .snapshots();
     return snapshots.map((snapshot) => snapshot.docs.map((e) {
           final data = e.data();
-          print(data);
           return data != null ? Entry.fromJson(data) : null;
         }).toList());
   }
 
-  Future<void> createEntry(Entry entry) async {
+  Future<void> createEntry(Entry entry, uid) async {
     await FirebaseFirestore.instance.collection('Entries').doc().set({
       'comment': entry.comment,
       'start': entry.start,
       'end': entry.end,
       'jobId': entry.jobId,
+      'userId': uid,
       'entryRate': entry.entryRate,
       'id': DateTime.now().millisecondsSinceEpoch,
     });

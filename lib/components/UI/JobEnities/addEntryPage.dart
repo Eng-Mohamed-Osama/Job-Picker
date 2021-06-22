@@ -64,6 +64,13 @@ class _AddEntry extends State<AddEntry> {
                             'Your entry end date can\'t be set to a date  before your entry start date Please fix this',
                             'Ok',
                             false);
+                      } else if (endTime.difference(startTime).inHours < 1) {
+                        customDialogs(
+                            context,
+                            'Entry time is short',
+                            'Your entry total time is less than on hour please update your entry time to be atleast an hour long ',
+                            'Ok',
+                            false);
                       } else {
                         await widget.dataBase.createEntry(Entry(
                           comment: entryCommentController.text.toString(),

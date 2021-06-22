@@ -45,12 +45,13 @@ class DataBaseProvider extends ChangeNotifier {
 
   //Entries
 
-  Stream<List<Entry>> getEntries({jobId}) {
-    return _dataBaseRepository.getEntries(jobId: jobId);
+  Stream<List<Entry>> getEntries({jobId, query, descend}) {
+    return _dataBaseRepository.getEntries(
+        jobId: jobId, query: query, descend: descend, uid: this.uid);
   }
 
   Future<void> createEntry(Entry entry) async {
-    await _dataBaseRepository.createEntry(entry);
+    await _dataBaseRepository.createEntry(entry, this.uid);
   }
 
   Future<void> deleteEntry(entryId) async {

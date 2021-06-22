@@ -29,12 +29,13 @@ class DataBaseRepository {
     return _firebaseDataBase.editJob(documentUniquId, jobdata);
   }
 
-  Stream<List<Entry>> getEntries({jobId}) {
-    return _firebaseDataBase.getEntries(jobId: jobId);
+  Stream<List<Entry>> getEntries({jobId, query, descend, uid}) {
+    return _firebaseDataBase.getEntries(
+        jobId: jobId, query: query, descend: descend, uid: uid);
   }
 
-  Future<void> createEntry(Entry entry) {
-    return _firebaseDataBase.createEntry(entry);
+  Future<void> createEntry(Entry entry, uid) {
+    return _firebaseDataBase.createEntry(entry, uid);
   }
 
   Future<void> deleteEntry(entryId) {

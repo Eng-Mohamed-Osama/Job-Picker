@@ -116,8 +116,6 @@ class _HomePageState extends State<HomePage> {
                                   MaterialPageRoute(
                                       builder: (context) => JobEntity(
                                             dataBase: widget.jobsProvider,
-                                            // jobName: job.jobData.name,
-                                            // jobRate: job.jobData.ratePerHour,
                                             jobID: job.docId,
                                           )))
                             },

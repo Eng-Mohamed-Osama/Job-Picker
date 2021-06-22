@@ -78,7 +78,6 @@ Widget _bulidEntry(BuildContext context, DataBaseProvider dataBase, jobId) {
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.length > 0) {
           final allEntites = snapshot.data.toList();
-          print(allEntites);
           return ListView.separated(
             separatorBuilder: (ctx, index) {
               return Divider();

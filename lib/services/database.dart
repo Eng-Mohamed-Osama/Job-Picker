@@ -124,7 +124,6 @@ class FirebaseDataBase implements DataBase {
   //Entries
   @override
   Stream<List<Entry>> getEntries({jobId, query, descend, uid}) {
-    print('we are here $descend');
     final snapshots = (jobId != null)
         ? FirebaseFirestore.instance
             .collection('Entries')
